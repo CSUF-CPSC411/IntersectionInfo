@@ -1,0 +1,25 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext {
+        // Required for setting navigation version
+        navigationVersion = "2.3.5"
+        // Required for setting retrofit version
+        version_retrofit = "2.9.0"
+        // Required for setting moshi version
+        version_moshi = "1.8.0"
+        // Required for setting glide version
+        version_glide = "4.8.0"
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:7.0.0"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
