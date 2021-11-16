@@ -15,7 +15,8 @@ import com.bumptech.glide.Glide
 fun bindImage(imgView: ImageView, imgUrl: String?) {
     // Makes sure imgUrl is not null
     imgUrl?.let {
-        // Use Glide to create an Image from the given URL
+        // Use Glide to create an Image from the given URL and store into
+        // the ImageView on the layout
         val imgUri =
             imgUrl.toUri().buildUpon().scheme("https").build()
         Glide.with(imgView.context)
