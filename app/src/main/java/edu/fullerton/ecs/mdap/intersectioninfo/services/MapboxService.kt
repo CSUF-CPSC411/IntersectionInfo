@@ -53,9 +53,9 @@ class MapboxService {
              * @return Place object using data from the API
              */
             @GET("geocoding/v5/mapbox.places/{search_string}.json")
-            suspend fun getPlaces(@Path(value = "search_string") search: String,
+            fun getPlaces(@Path(value = "search_string") search: String,
                          @Query("access_token") token: String = ACCESS_TOKEN):
-                    Place
+                    Call<Place>
         }
 
 

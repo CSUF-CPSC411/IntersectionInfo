@@ -6,6 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.fullerton.ecs.mdap.intersectioninfo.services.MapboxService
 import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Response
+import javax.security.auth.callback.Callback
 
 /**
  * ViewModel for data displayed on the map fragment.
@@ -37,23 +40,17 @@ class GeocodingViewModel: ViewModel() {
      * @param searchString string to match to an address
      */
     fun geoCode(searchString: String) {
-        // Run API request as a corotuine to not block the application.
         viewModelScope.launch {
-            try {
-                val place = MapboxService.GeoCoding.Api.retrofitService.getPlaces(searchString)
-                // Use the name, longitude, and latitude of the first matched place
-                _address.value = place.features[0].place_name
-                var longitude = place.features[0].center[0]
-                var latitude = place.features[0].center[1]
+            MapboxService.GeoCoding.Api.retrofitService.getPlaces(searchString).enqueue(
+                object : Callback, retrofit2.Callback<Place> {
+                    override fun onResponse(call: Call<Place>, response: Response<Place>) {
+                        _address.value = response.body()?.features?.get(0)?.place_name
+                    }
 
-                var zoom = 15
-                var rotation = 0
-                // Create a URL using the retrieved values. The URL follows the Static Images API
-                // format.
-                _imageURL.value = "https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${longitude},${latitude},${zoom},${rotation}/300x200?access_token=${MapboxService.ACCESS_TOKEN}"
-            } catch (e: Exception) {
-                _address.value = "Failure: ${e.message}"
-            }
+                    override fun onFailure(call: Call<Place>, t: Throwable) {
+                        _address.value = "Failure ${t.message}"
+                    }
+                })
         }
     }
 }
