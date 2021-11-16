@@ -41,9 +41,12 @@ class GeocodingViewModel: ViewModel() {
      */
     fun geoCode(searchString: String) {
         viewModelScope.launch {
+            // Take note that Retrofit parsed and converted data to a Place object.
             MapboxService.GeoCoding.Api.retrofitService.getPlaces(searchString).enqueue(
                 object : Callback, retrofit2.Callback<Place> {
                     override fun onResponse(call: Call<Place>, response: Response<Place>) {
+                        // We can access the properties of the Place object, but use safe calls
+                        // to avoid issues.
                         _address.value = response.body()?.features?.get(0)?.place_name
                     }
 

@@ -24,8 +24,6 @@ class MapFragment : Fragment() {
         val model = GeocodingViewModel()
         binding.geoCodingViewModel = model
         binding.lifecycleOwner = this
-        // Make sure our BindingAdapters are connected
-        binding.executePendingBindings()
 
         return binding.root
     }
