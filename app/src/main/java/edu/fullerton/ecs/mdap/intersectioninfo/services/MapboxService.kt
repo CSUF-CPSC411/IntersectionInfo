@@ -1,11 +1,8 @@
 package edu.fullerton.ecs.mdap.intersectioninfo.services
 
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import edu.fullerton.ecs.mdap.intersectioninfo.geocoding.Place
 import retrofit2.Call
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -19,18 +16,12 @@ class MapboxService {
         // Base URL of the API
         private const val BASE_URL = "https://api.mapbox.com/"
 
-        // Acess token. Replace with your own in future projects.
+        // Access token. Replace with your own in future projects.
         const val ACCESS_TOKEN = "pk.eyJ1IjoicGludmVudGFkbyIsImEiOiJja3cwd2wzZjQxNHl0Mm5vYmNzbjdlemc4In0.7JJaksZTGFSR85coY8HNWg"
-
-        // Moshi object used to parse JSON.
-        private val moshi = Moshi.Builder()
-            .add(KotlinJsonAdapterFactory())
-            .build()
 
         // Retrofit object for retrieving data from the internet.
         private val retrofit = Retrofit.Builder()
-            //.addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .addConverterFactory(ScalarsConverterFactory.create())
             .baseUrl(BASE_URL)
             .build()
 
@@ -50,18 +41,18 @@ class MapboxService {
              *
              * @param search search string
              * @param token access token
-             * @return Place object using data from the API
+             * @return data from the API
              */
             @GET("geocoding/v5/mapbox.places/{search_string}.json")
             fun getPlaces(@Path(value = "search_string") search: String,
                          @Query("access_token") token: String = ACCESS_TOKEN):
-                    Call<Place>
+                    Call<String>
         }
 
 
         object Api {
             /**
-             * By lazy allows us to create an uninitialized constant proprerty.
+             * by lazy allows us to create an uninitialized constant proprerty.
              * It will be assigned a value returned by the closure when it is
              * accessed the first time thereby saving processing time.
              */

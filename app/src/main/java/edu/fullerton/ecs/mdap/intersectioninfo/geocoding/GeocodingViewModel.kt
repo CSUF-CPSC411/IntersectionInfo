@@ -42,12 +42,12 @@ class GeocodingViewModel: ViewModel() {
     fun geoCode(searchString: String) {
         viewModelScope.launch {
             MapboxService.GeoCoding.Api.retrofitService.getPlaces(searchString).enqueue(
-                object : Callback, retrofit2.Callback<Place> {
-                    override fun onResponse(call: Call<Place>, response: Response<Place>) {
-                        _address.value = response.body()?.features?.get(0)?.place_name
+                object : Callback, retrofit2.Callback<String> {
+                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                        _address.value = response.body()
                     }
 
-                    override fun onFailure(call: Call<Place>, t: Throwable) {
+                    override fun onFailure(call: Call<String>, t: Throwable) {
                         _address.value = "Failure ${t.message}"
                     }
                 })
