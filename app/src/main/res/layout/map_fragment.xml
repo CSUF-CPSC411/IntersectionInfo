@@ -44,6 +44,14 @@
             app:layout_constraintTop_toBottomOf="@+id/location"
             android:onClick="@{()-> geoCodingViewModel.geoCode(location) }"/>
 
+        <!-- We use the BindingAdapter called imageUrl to create a new attribute
+            and access it using app:<binding adapter name>. In this case, app:imageUrl.
+
+            The ImageView object in the layout and the value assigned to
+            imageUrl (the imageURL string from geoCodingViewModel) are passed as parameters
+            to the bindImage in BindingAdapter.kt function.
+        -->
+
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="303dp"
